@@ -71,6 +71,7 @@ model ProductVariant {
 model ProductImage {
   id        Int      @id @default(autoincrement())
   url       String
+  publicId  String?
   altText   String?
   isPrimary Boolean  @default(false)
   productId Int

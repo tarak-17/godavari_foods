@@ -6,6 +6,9 @@ const {
   getProductById,
   updateProduct,
   deleteProduct,
+  createProductVariant,
+  updateProductVariant,
+  deleteProductVariant,
 } = require("../controllers/product.controller");
 
 const {
@@ -20,13 +23,25 @@ const {
 
 const router = express.Router();
 
-// GET all products
+// =====================================
+// GET ALL PRODUCTS
+// PUBLIC
+// =====================================
+
 router.get("/", getProducts);
 
-// GET single product
+// =====================================
+// GET SINGLE PRODUCT
+// PUBLIC
+// =====================================
+
 router.get("/:id", getProductById);
 
-// CREATE product
+// =====================================
+// CREATE PRODUCT
+// ADMIN ONLY
+// =====================================
+
 router.post(
   "/",
   authenticate,
@@ -42,12 +57,17 @@ router.post(
     }
 
     req.body = result.data;
+
     next();
   },
   createProduct
 );
 
-// UPDATE product
+// =====================================
+// UPDATE PRODUCT
+// ADMIN ONLY
+// =====================================
+
 router.patch(
   "/:id",
   authenticate,
@@ -63,17 +83,58 @@ router.patch(
     }
 
     req.body = result.data;
+
     next();
   },
   updateProduct
 );
 
-// DELETE product
+// =====================================
+// DELETE PRODUCT
+// ADMIN ONLY
+// =====================================
+
 router.delete(
   "/:id",
   authenticate,
   authorize("ADMIN"),
   deleteProduct
+);
+
+// =====================================
+// CREATE PRODUCT VARIANT
+// ADMIN ONLY
+// =====================================
+
+router.post(
+  "/:id/variants",
+  authenticate,
+  authorize("ADMIN"),
+  createProductVariant
+);
+
+// =====================================
+// UPDATE PRODUCT VARIANT
+// ADMIN ONLY
+// =====================================
+
+router.patch(
+  "/:id/variants/:variantId",
+  authenticate,
+  authorize("ADMIN"),
+  updateProductVariant
+);
+
+// =====================================
+// DELETE PRODUCT VARIANT
+// ADMIN ONLY
+// =====================================
+
+router.delete(
+  "/:id/variants/:variantId",
+  authenticate,
+  authorize("ADMIN"),
+  deleteProductVariant
 );
 
 module.exports = router;
